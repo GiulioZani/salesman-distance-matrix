@@ -9,9 +9,10 @@ The only thig I added to it is the possibility of running the algorithm given a 
 
 //The nth column corresponds to the nth location.
 //This matrix must be symmetric.
-const distanceMatrix = [ 
-  [10.4, 7]
-  [7, 10.4]
+const distanceMatrix = [
+  [0, 6661.9, 6680.2],
+  [6661.9, 0, 18.3],
+  [6680.2, 18.3, 0],
 ];
 var solution = salesman.solve(distanceMatrix);
 // solution now contains, at position n, location n's position in the optimized array.

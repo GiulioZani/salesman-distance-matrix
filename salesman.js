@@ -4,24 +4,29 @@
  * salesman npm module
  *
  * Good heuristic for the traveling salesman problem using simulated annealing.
- * @see {@link https://lovasoa.github.io/salesman.js/|demo}
  **/
 
 /**
  * @private
  */
+function Path() {}
+
 function PathFromDistanceMatrix(distanceMatrix) {
-  this.points = points;
+  this.__proto__ = Path.prototype;
   this.order = new Array(distanceMatrix.length);
   for (var i = 0; i < distanceMatrix.length; i++) this.order[i] = i;
   this.distances = new Array(distanceMatrix.length * distanceMatrix.length);
+  this.length = distanceMatrix.length;
+  this.distanceMatrix = distanceMatrix;
   for (var i = 0; i < distanceMatrix.length; i++)
     for (var j = 0; j < distanceMatrix.length; j++)
       this.distances[j + i * distanceMatrix.length] = distanceMatrix[i][j];
 }
 function PathFromPoints(points) {
+  this.__proto__ = Path.prototype;
   this.points = points;
   this.order = new Array(points.length);
+  this.length = points.length;
   for (var i = 0; i < points.length; i++) this.order[i] = i;
   this.distances = new Array(points.length * points.length);
   for (var i = 0; i < points.length; i++)
@@ -38,8 +43,8 @@ Path.prototype.change = function (temp) {
 };
 Path.prototype.size = function () {
   var s = 0;
-  for (var i = 0; i < this.points.length; i++) {
-    s += this.distance(i, (i + 1) % this.points.length);
+  for (var i = 0; i < this.length; i++) {
+    s += this.distance(i, (i + 1) % this.length);
   }
   return s;
 };
@@ -62,23 +67,34 @@ Path.prototype.delta_distance = function (i, j) {
     this.distance(i, ip1) -
     this.distance(jm1, j) -
     this.distance(j, jp1);
+
   if (jm1 === i || jp1 === i) s += 2 * this.distance(i, j);
   return s;
 };
 Path.prototype.index = function (i) {
-  return (i + this.points.length) % this.points.length;
+  return (i + this.length) % this.length;
 };
 Path.prototype.access = function (i) {
   return this.points[this.order[this.index(i)]];
 };
 Path.prototype.distance = function (i, j) {
-  return this.distances[this.order[i] * this.points.length + this.order[j]];
+  return this.distances[this.order[i] * this.length + this.order[j]];
 };
 // Random index between 1 and the last position in the array of points
 Path.prototype.randomPos = function () {
-  return 1 + Math.floor(Math.random() * (this.points.length - 1));
+  return 1 + Math.floor(Math.random() * (this.length - 1));
 };
 
+Path.prototype.temperature = function () {
+  if (this.distanceMatrix) {
+    return (
+      100 *
+      this.distanceMatrix[this.order[this.index(0)]][this.order[this.index(1)]]
+    );
+  } else {
+    return 100 * this.distance(this.access(0), this.access(1));
+  }
+};
 /**
  * Solves the following problem:
  *  Given a list of points and the distances between each pair of points,
@@ -102,18 +118,19 @@ Path.prototype.randomPos = function () {
  **/
 function solve(input, temp_coeff, callback) {
   if (input[0] instanceof Point) {
+    const points = input;
     const path = new PathFromPoints(points);
     if (points.length < 2) return path.order; // There is nothing to optimize
   } else {
-    var path = new Path(distanceMatrix);
+    const distanceMatrix = input;
+    var path = new PathFromDistanceMatrix(distanceMatrix);
     if (distanceMatrix.length < 2) return path.order; // There is nothing to optimize
   }
-  if (!temp_coeff)
-    temp_coeff = 1 - Math.exp(-10 - Math.min(points.length, 1e6) / 1e5);
   var has_callback = typeof callback === "function";
-
+  if (!temp_coeff)
+    temp_coeff = 1 - Math.exp(-10 - Math.min(path.length, 1e6) / 1e5);
   for (
-    var temperature = 100 * distance(path.access(0), path.access(1));
+    var temperature = path.temperature();
     temperature > 1e-6;
     temperature *= temp_coeff
   ) {
@@ -140,10 +157,9 @@ function distance(p, q) {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-if (typeof module === "object") {
-  module.exports = {
-    solve: solve,
-    Point: Point,
-  };
-}
+const result = solve([
+  [0, 6661.9, 6680.2],
+  [6661.9, 0, 18.3],
+  [6680.2, 18.3, 0],
+]);
 export { solve, Point };
