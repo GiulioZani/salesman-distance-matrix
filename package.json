@@ -1,15 +1,14 @@
 {
-  "name": "salesman.js",
-  "version": "2.0.4",
+  "name": "salesman-distance-matrix",
+  "version": "1.0",
   "description": "Solves the traveling salesman problem using simulated annealing.",
   "main": "salesman.js",
   "scripts": {
-    "test": "node test.js",
-    "prepare": "node salesman.js && node node_modules/jsdoc-to-markdown/bin/cli.js --src salesman.js > README.md"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lovasoa/salesman.js.git"
+    "url": "https://github.com/GiulioZani/salesman-distance-matrix.git"
   },
   "keywords": [
     "traveling",
@@ -18,14 +17,15 @@
     "annealing",
     "algorithm",
     "path",
-    "points"
+    "points",
+    "disance matrix"
   ],
   "author": "Giulio Zani",
   "license": "",
   "bugs": {
-    "url": "https://github.com/lovasoa/salesman.js/issues"
+    "url": "https://github.com/GiulioZani/salesman-distance-matrix/issues"
   },
-  "homepage": "https://github.com/lovasoa/salesman.js",
+  "homepage": "https://github.com/GiulioZani/salesman-distance-matrix",
   "devDependencies": {
     "jsdoc-to-markdown": "1.3"
   }
