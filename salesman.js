@@ -146,3 +146,4 @@ if (typeof module === "object") {
     Point: Point,
   };
 }
+export { solve, Point };
