@@ -1,4 +1,4 @@
-# Salesman With Distance Matrix
+# Salesman Problem With Distance Matrix
 
 Solves the travelling salesman problem. This is a fork from the [original](https://github.com/lovasoa/salesman.js/) project.
 The only thig I added to it is the possibility of running the algorithm given a **distance matrix** as an input.
