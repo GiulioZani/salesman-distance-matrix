@@ -20,8 +20,8 @@
     "path",
     "points"
   ],
-  "author": "Ophir LOJKINE",
-  "license": "Apache v2",
+  "author": "Giulio Zani",
+  "license": "",
   "bugs": {
     "url": "https://github.com/lovasoa/salesman.js/issues"
   },
