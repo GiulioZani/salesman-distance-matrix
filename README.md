@@ -1,10 +1,11 @@
 # 
-Solves the travelling salesman problem. This is a fork from [this](https://github.com/lovasoa/salesman.js/) project.
+Solves the travelling salesman problem. This is a fork from the [original](https://github.com/lovasoa/salesman.js/) project.
 The only thig I added to it is the possibility of running the algorithm given a **distance matrix** as an input.
 
 **Examples** 
 ```js
-//With a distance matrix.
+// Given a distance matrix.
+
 //The nth column corresponds to the nth location.
 //This matrix must be symmetric.
 const distanceMatrix = [ 
@@ -14,7 +15,7 @@ const distanceMatrix = [
 var solution = salesman.solve(distanceMatrix);
 // solution now contains, at position n, location n's position in the optimized array.
 
-// With an array of points (taken from the original repository).
+// Given an array of points (taken from the original repository).
 var points = [
       new salesman.Point(2,3)
       //other points
